@@ -6,36 +6,34 @@ function preloadImages() {
   const ext = ".webp";
   const images = [];
 
-  // Базовое кресло
   images.push(`${basePath}base.webp`);
 
-  // Боковины
   colors.forEach(color => {
     images.push(`${basePath}sides/${color}${ext}`);
-  });
-
-  // Подголовники
-  colors.forEach(color => {
     images.push(`${basePath}headrest/${color}${ext}`);
   });
 
-  // Центр (узоры + цвета)
   patterns.forEach(pattern => {
     colors.forEach(color => {
       images.push(`${basePath}center-w-perforation/${pattern}/${color}${ext}`);
     });
   });
 
-  // Загружаем все изображения в кэш
   images.forEach(src => {
     const img = new Image();
     img.src = src;
   });
-
-  console.log(`✅ Предзагружено ${images.length} изображений`);
 }
 
-function updateView() {
+function loadImage(src) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => resolve(src);
+    img.src = src;
+  });
+}
+
+async function updateView() {
   const color = document.getElementById("center-color").value;
   const sideColor = document.getElementById("side-color").value;
   const pattern = document.getElementById("pattern").value;
@@ -43,14 +41,21 @@ function updateView() {
   const basePath = "img/";
   const ext = ".webp";
 
-  document.getElementById("layer-center").src =
-    `${basePath}center-w-perforation/${pattern}/${color}${ext}`;
+  const centerSrc = `${basePath}center-w-perforation/${pattern}/${color}${ext}`;
+  const sideSrc = `${basePath}sides/${sideColor}${ext}`;
+  const headrestSrc = `${basePath}headrest/${color}${ext}`;
 
-  document.getElementById("layer-sides").src =
-    `${basePath}sides/${sideColor}${ext}`;
+  // Ждём загрузки всех трёх
+  const [center, sides, headrest] = await Promise.all([
+    loadImage(centerSrc),
+    loadImage(sideSrc),
+    loadImage(headrestSrc)
+  ]);
 
-  document.getElementById("layer-headrest").src =
-    `${basePath}headrest/${color}${ext}`;
+  // После загрузки — синхронно применяем
+  document.getElementById("layer-center").src = center;
+  document.getElementById("layer-sides").src = sides;
+  document.getElementById("layer-headrest").src = headrest;
 }
 
 document.querySelectorAll("select").forEach(select => {
