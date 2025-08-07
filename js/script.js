@@ -4,13 +4,16 @@ function updateView() {
   const pattern = document.getElementById("pattern").value;
 
   const basePath = "img/";
-  const centerImage = `${basePath}center-w-perforation/${pattern}/${color}.png`;
-  const sideImage = `${basePath}sides/${sideColor}.png`;
-  const headrestImage = `${basePath}headrest/${color}.png`;
+  const ext = ".webp";
 
-  document.getElementById("layer-center").src = centerImage;
-  document.getElementById("layer-sides").src = sideImage;
-  document.getElementById("layer-headrest").src = headrestImage;
+  document.getElementById("layer-center").src =
+    `${basePath}center-w-perforation/${pattern}/${color}${ext}`;
+
+  document.getElementById("layer-sides").src =
+    `${basePath}sides/${sideColor}${ext}`;
+
+  document.getElementById("layer-headrest").src =
+    `${basePath}headrest/${color}${ext}`;
 }
 
 document.querySelectorAll("select").forEach(select => {
