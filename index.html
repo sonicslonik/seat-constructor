@@ -2,68 +2,79 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>Конфигуратор кресла</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Конфигуратор автокресла</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="stylesheet" href="css/styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div class="container">
+    <h1>2D Конфигуратор автокресла</h1>
 
-<div class="container">
-  <header>
-    <h1>Конфигуратор кресла</h1>
-    <p>Центр, подголовник и боковины настраиваются по цвету и узору.</p>
-  </header>
-
-  <main id="constructor">
-    <section class="viewer">
-      <img id="layer-base" src="img/base.webp" alt="База" loading="eager" />
-      <img id="layer-sides" src="img/sides/00black.webp" alt="Боковины" loading="lazy" />
-      <img id="layer-center" src="img/center-w-perforation/lines/00black.webp" alt="Центр" loading="lazy" />
-      <img id="layer-headrest" src="img/headrest/00black.webp" alt="Подголовник" loading="lazy" />
-    </section>
-
-    <section class="controls">
-      <div class="control-group">
-        <label for="center-color">Цвет центра</label>
-        <select id="center-color">
-          <option value="00black">Чёрный</option>
-          <option value="01grey">Серый</option>
-          <option value="02white">Белый</option>
-          <option value="03beige">Бежевый</option>
-          <option value="04brown">Коричневый</option>
-          <option value="05red">Красный</option>
-        </select>
+    <div class="configurator">
+      <div class="preview">
+        <div class="image-stack">
+          <img src="img/base.webp" class="layer" alt="base" />
+          <img id="layer-sides" class="layer" alt="sides" />
+          <img id="layer-center" class="layer" alt="center" />
+          <img id="layer-headrest" class="layer" alt="headrest" />
+          <img id="layer-stitch" class="layer" alt="stitch" style="display: none;" />
+        </div>
       </div>
 
-      <div class="control-group">
-        <label for="side-color">Цвет боков</label>
-        <select id="side-color">
-          <option value="00black">Чёрный</option>
-          <option value="01grey">Серый</option>
-          <option value="02white">Белый</option>
-          <option value="03beige">Бежевый</option>
-          <option value="04brown">Коричневый</option>
-          <option value="05red">Красный</option>
-        </select>
+      <div class="controls">
+        <label>
+          Цвет центра
+          <select id="center-color">
+            <option value="00black">Чёрный</option>
+            <option value="01grey">Серый</option>
+            <option value="02white">Белый</option>
+            <option value="03beige">Бежевый</option>
+            <option value="04brown">Коричневый</option>
+            <option value="05red">Красный</option>
+          </select>
+        </label>
+
+        <label>
+          Цвет боковин
+          <select id="side-color">
+            <option value="00black">Чёрный</option>
+            <option value="01grey">Серый</option>
+            <option value="02white">Белый</option>
+            <option value="03beige">Бежевый</option>
+            <option value="04brown">Коричневый</option>
+            <option value="05red">Красный</option>
+          </select>
+        </label>
+
+        <label>
+          Узор центра
+          <select id="pattern">
+            <option value="lines">Двойная линия</option>
+            <option value="rhomb-small">Ромб мелкий</option>
+            <option value="rhomb-large">Ромб крупный</option>
+          </select>
+        </label>
+
+        <label>
+          Прострочка
+          <select id="stitch-pattern">
+            <option value="none">Нет</option>
+            <option value="lines">Линии</option>
+            <option value="rhomb-small">Ромб мелкий</option>
+            <option value="rhomb-large">Ромб крупный</option>
+            <option value="rhomb-double">Ромб двойной</option>
+            <option value="hexagon">Соты</option>
+          </select>
+        </label>
       </div>
+    </div>
 
-      <div class="control-group">
-        <label for="pattern">Узор центра</label>
-        <select id="pattern">
-          <option value="lines">Двойная линия</option>
-          <option value="rhomb-small">Малый ромб</option>
-          <option value="rhomb-large">Большой ромб</option>
-        </select>
-      </div>
-    </section>
-  </main>
-  <footer class="version">
-  Версия: <span id="version">v1.0</span>
-</footer>
+    <div class="footer">
+      <p>Версия: <span id="version"></span></p>
+    </div>
+  </div>
 
-</div>
-
-<script src="js/script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
