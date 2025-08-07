@@ -3,61 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Конструктор автокресел</title>
+  <title>Конструктор кресел</title>
   <link rel="stylesheet" href="css/styles.css" />
-  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
 </head>
 <body>
-  <div class="constructor">
-    <h1>Конструктор автокресел</h1>
-    <div class="canvas">
-      <img id="base" src="img/base.webp" alt="Base" />
-      <img id="sides" alt="Sides" />
-      <img id="headrest" alt="Headrest" />
-      <img id="center" alt="Center" />
-      <img id="stitch" alt="Stitch" />
-    </div>
+  <div class="container">
+    <h1>Конструктор кресел</h1>
+
     <div class="controls">
-      <label>Цвет центра
-        <select id="center-color">
-          <option value="00black">Черный</option>
-          <option value="01grey">Серый</option>
-          <option value="02white">Белый</option>
-          <option value="03beige">Бежевый</option>
-          <option value="04brown">Коричневый</option>
-          <option value="05red">Красный</option>
+      <div class="control-group">
+        <label>Цвет основы</label>
+        <select id="baseColorSelect"></select>
+      </div>
+
+      <div class="control-group">
+        <label>Узор основы</label>
+        <select id="patternSelect">
+          <option value="lines">Lines</option>
+          <option value="rhomb-large">Rhomb Large</option>
+          <option value="rhomb-small">Rhomb Small</option>
         </select>
-      </label>
-      <label>Цвет боков
-        <select id="sides-color">
-          <option value="00black">Черный</option>
-          <option value="01grey">Серый</option>
-          <option value="02white">Белый</option>
-          <option value="03beige">Бежевый</option>
-          <option value="04brown">Коричневый</option>
-          <option value="05red">Красный</option>
-        </select>
-      </label>
-      <label>Узор центра
-        <select id="pattern">
-          <option value="lines">Двойная линия</option>
-          <option value="rhomb-small">Мелкий ромб</option>
-          <option value="rhomb-large">Крупный ромб</option>
-        </select>
-      </label>
-      <label>Перфорация
-        <select id="perforation">
-          <option value="yes">С перфорацией</option>
-          <option value="no">Без перфорации</option>
-        </select>
-      </label>
-      <label>
-        Прострочка
-        <input type="checkbox" id="stitch-enabled" checked />
-      </label>
+      </div>
+
+      <div class="control-group">
+        <label>Цвет боковин</label>
+        <select id="sidesColorSelect"></select>
+      </div>
     </div>
-    <div class="version">Версия: v1.6</div>
+
+    <div class="seat-view">
+      <img id="base" src="img/base.webp" />
+      <img id="headrest" />
+      <img id="center" />
+      <img id="sides" />
+      <img id="stitch" />
+    </div>
   </div>
+
   <script src="js/script.js"></script>
 </body>
 </html>

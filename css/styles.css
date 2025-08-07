@@ -1,76 +1,55 @@
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   margin: 0;
-  background: #f9f9f9;
-  color: #333;
+  padding: 0;
+  background: #121212;
+  color: #fff;
 }
 
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 800px;
+  margin: auto;
   padding: 2rem;
 }
 
 h1 {
-  font-size: 2rem;
   text-align: center;
   margin-bottom: 2rem;
 }
 
-.configurator {
+.controls {
   display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
-  gap: 2rem;
-  justify-content: center;
+  margin-bottom: 2rem;
 }
 
-.preview {
-  flex: 1 1 400px;
-  max-width: 500px;
-  position: relative;
-  aspect-ratio: 1 / 1;
+.control-group {
+  flex: 1 1 30%;
+  margin-bottom: 1rem;
 }
 
-.image-stack {
+select {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  background: #222;
+  color: #fff;
+  border: 1px solid #444;
+}
+
+.seat-view {
   position: relative;
   width: 100%;
-  height: 100%;
+  padding-top: 100%;
+  background-color: #000;
 }
 
-.layer {
+.seat-view img {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  object-fit: contain;
-  pointer-events: none;
-}
-
-.controls {
-  flex: 1 1 300px;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-label {
-  display: flex;
-  flex-direction: column;
-  font-size: 0.9rem;
-  gap: 0.25rem;
-}
-
-select {
-  padding: 0.5rem;
-  font-size: 1rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-.footer {
-  margin-top: 3rem;
-  text-align: center;
-  font-size: 0.85rem;
-  color: #999;
+  height: auto;
+  transition: opacity 0.3s ease-in-out;
 }
