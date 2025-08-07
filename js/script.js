@@ -30,9 +30,9 @@ function updateLayers() {
   const pattern = patternSelect.value;
   const stitch = stitchSelect.value;
 
-  const centerPath = `img/center-w-perforation/${pattern}/${centerColor}.png`;
-  const headrestPath = `img/headrest/${centerColor}.png`;
-  const sidesPath = `img/sides/${sideColor}.png`;
+  const centerPath = `img/center-w-perforation/${pattern}/${centerColor}.webp`;
+  const headrestPath = `img/headrest/${centerColor}.webp`;
+  const sidesPath = `img/sides/${sideColor}.webp`;
 
   layerCenter.src = centerPath;
   layerHeadrest.src = headrestPath;
