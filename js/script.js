@@ -1,6 +1,11 @@
+// Версия проекта (обновляй вручную при каждом изменении)
+const VERSION = "v1.0";
+
+// Возможные значения
 const colors = ["00black", "01gray", "02white", "03beige", "04brown", "05red"];
 const patterns = ["lines", "rhomb-small", "rhomb-large"];
 
+// Предзагрузка всех изображений
 function preloadImages() {
   const basePath = "img/";
   const ext = ".webp";
@@ -23,8 +28,11 @@ function preloadImages() {
     const img = new Image();
     img.src = src;
   });
+
+  console.log(`✅ Предзагружено ${images.length} изображений`);
 }
 
+// Загрузка одного изображения (обёртка в Promise)
 function loadImage(src) {
   return new Promise(resolve => {
     const img = new Image();
@@ -33,6 +41,7 @@ function loadImage(src) {
   });
 }
 
+// Обновление отображения (с ожиданием загрузки всех слоёв)
 async function updateView() {
   const color = document.getElementById("center-color").value;
   const sideColor = document.getElementById("side-color").value;
@@ -45,24 +54,30 @@ async function updateView() {
   const sideSrc = `${basePath}sides/${sideColor}${ext}`;
   const headrestSrc = `${basePath}headrest/${color}${ext}`;
 
-  // Ждём загрузки всех трёх
+  // Дожидаемся загрузки всех нужных слоёв
   const [center, sides, headrest] = await Promise.all([
     loadImage(centerSrc),
     loadImage(sideSrc),
     loadImage(headrestSrc)
   ]);
 
-  // После загрузки — синхронно применяем
+  // Меняем изображения одновременно
   document.getElementById("layer-center").src = center;
   document.getElementById("layer-sides").src = sides;
   document.getElementById("layer-headrest").src = headrest;
 }
 
+// Назначаем события
 document.querySelectorAll("select").forEach(select => {
   select.addEventListener("change", updateView);
 });
 
+// Инициализация
 window.addEventListener("DOMContentLoaded", () => {
   preloadImages();
   updateView();
+
+  // Отображение версии
+  const versionSpan = document.getElementById("version");
+  if (versionSpan) versionSpan.textContent = VERSION;
 });
