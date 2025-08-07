@@ -1,5 +1,5 @@
 // Версия проекта (обновляй вручную при каждом изменении)
-const VERSION = "v1.1";
+const VERSION = "v1.2";
 
 // Возможные значения
 const colors = ["00black", "01grey", "02white", "03beige", "04brown", "05red"];
