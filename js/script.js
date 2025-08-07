@@ -2,7 +2,7 @@
 const VERSION = "v1.0";
 
 // Возможные значения
-const colors = ["00black", "01gray", "02white", "03beige", "04brown", "05red"];
+const colors = ["00black", "01grey", "02white", "03beige", "04brown", "05red"];
 const patterns = ["lines", "rhomb-small", "rhomb-large"];
 
 // Предзагрузка всех изображений
