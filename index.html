@@ -3,81 +3,61 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2D Конфигуратор Авточехлов</title>
-  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <title>Конструктор автокресел</title>
   <link rel="stylesheet" href="css/styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
 </head>
 <body>
-  <div class="container">
-    <h1>2D Конфигуратор Авточехлов</h1>
-
-    <div class="configurator">
-      <!-- Превью -->
-      <div class="preview">
-        <div class="image-stack">
-          <img src="img/base.webp" alt="base" class="layer" style="z-index: 1;" />
-          <img id="layer-sides" src="" alt="sides" class="layer" style="z-index: 2;" />
-          <img id="layer-center" src="" alt="center" class="layer" style="z-index: 3;" />
-          <img id="layer-headrest" src="" alt="headrest" class="layer" style="z-index: 4;" />
-          <img id="layer-stitch" src="" alt="stitch" class="layer" style="z-index: 5;" />
-        </div>
-      </div>
-
-      <!-- Панель управления -->
-      <div class="controls">
-        <label>
-          Цвет центра
-          <select id="center-color">
-            <option value="00black">Чёрный</option>
-            <option value="01grey">Серый</option>
-            <option value="02white">Белый</option>
-            <option value="03beige">Бежевый</option>
-            <option value="04brown">Коричневый</option>
-            <option value="05red">Красный</option>
-          </select>
-        </label>
-
-        <label>
-          Цвет боков
-          <select id="side-color">
-            <option value="00black">Чёрный</option>
-            <option value="01grey">Серый</option>
-            <option value="02white">Белый</option>
-            <option value="03beige">Бежевый</option>
-            <option value="04brown">Коричневый</option>
-            <option value="05red">Красный</option>
-          </select>
-        </label>
-
-        <label>
-          Узор центра
-          <select id="pattern">
-            <option value="lines">Линии</option>
-            <option value="rhomb-small">Мелкий ромб</option>
-            <option value="rhomb-large">Крупный ромб</option>
-          </select>
-        </label>
-
-        <label>
-          Прострочка
-          <select id="stitch-pattern">
-            <option value="none">Без прострочки</option>
-            <option value="lines">Линии</option>
-            <option value="rhomb-small">Мелкий ромб</option>
-            <option value="rhomb-large">Крупный ромб</option>
-            <option value="rhomb-double">Двойной ромб</option>
-            <option value="hexagon">Соты</option>
-          </select>
-        </label>
-      </div>
+  <div class="constructor">
+    <h1>Конструктор автокресел</h1>
+    <div class="canvas">
+      <img id="base" src="img/base.webp" alt="Base" />
+      <img id="sides" alt="Sides" />
+      <img id="headrest" alt="Headrest" />
+      <img id="center" alt="Center" />
+      <img id="stitch" alt="Stitch" />
     </div>
-
-    <div class="footer">
-      Версия конструктора: <span id="version">1.5</span>
+    <div class="controls">
+      <label>Цвет центра
+        <select id="center-color">
+          <option value="00black">Черный</option>
+          <option value="01grey">Серый</option>
+          <option value="02white">Белый</option>
+          <option value="03beige">Бежевый</option>
+          <option value="04brown">Коричневый</option>
+          <option value="05red">Красный</option>
+        </select>
+      </label>
+      <label>Цвет боков
+        <select id="sides-color">
+          <option value="00black">Черный</option>
+          <option value="01grey">Серый</option>
+          <option value="02white">Белый</option>
+          <option value="03beige">Бежевый</option>
+          <option value="04brown">Коричневый</option>
+          <option value="05red">Красный</option>
+        </select>
+      </label>
+      <label>Узор центра
+        <select id="pattern">
+          <option value="lines">Двойная линия</option>
+          <option value="rhomb-small">Мелкий ромб</option>
+          <option value="rhomb-large">Крупный ромб</option>
+        </select>
+      </label>
+      <label>Перфорация
+        <select id="perforation">
+          <option value="yes">С перфорацией</option>
+          <option value="no">Без перфорации</option>
+        </select>
+      </label>
+      <label>
+        Прострочка
+        <input type="checkbox" id="stitch-enabled" checked />
+      </label>
     </div>
+    <div class="version">Версия: v1.6</div>
   </div>
-
   <script src="js/script.js"></script>
 </body>
 </html>
