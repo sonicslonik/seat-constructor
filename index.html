@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Конфигуратор кресла</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Конфигуратор кресла</h1>
+    <p>Центр, подголовник и боковины настраиваются по цвету и узору.</p>
+  </header>
+
+  <main id="constructor">
+    <section class="viewer">
+      <img id="layer-base" src="img/base.png" alt="База кресла">
+      <img id="layer-sides" src="img/sides/00black.png" alt="Боковины">
+      <img id="layer-center" src="img/center-w-perforation/lines/00black.png" alt="Центр">
+      <img id="layer-headrest" src="img/headrest/00black.png" alt="Подголовник">
+    </section>
+
+    <section class="controls">
+      <div class="control-group">
+        <label for="center-color">Цвет центра</label>
+        <select id="center-color">
+          <option value="00black">Чёрный</option>
+          <option value="01gray">Серый</option>
+          <option value="02white">Белый</option>
+          <option value="03beige">Бежевый</option>
+          <option value="04brown">Коричневый</option>
+          <option value="05red">Красный</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label for="side-color">Цвет боков</label>
+        <select id="side-color">
+          <option value="00black">Чёрный</option>
+          <option value="01gray">Серый</option>
+          <option value="02white">Белый</option>
+          <option value="03beige">Бежевый</option>
+          <option value="04brown">Коричневый</option>
+          <option value="05red">Красный</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label for="pattern">Узор центра</label>
+        <select id="pattern">
+          <option value="lines">Двойная линия</option>
+          <option value="rhomb-small">Малый ромб</option>
+          <option value="rhomb-large">Большой ромб</option>
+        </select>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>
