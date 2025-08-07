@@ -3,25 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Конфигуратор автокресла</title>
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <title>2D Конфигуратор Авточехлов</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
   <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="container">
-    <h1>2D Конфигуратор автокресла</h1>
+    <h1>2D Конфигуратор Авточехлов</h1>
 
     <div class="configurator">
+      <!-- Превью -->
       <div class="preview">
         <div class="image-stack">
-          <img src="img/base.webp" class="layer" alt="base" />
-          <img id="layer-sides" class="layer" alt="sides" />
-          <img id="layer-center" class="layer" alt="center" />
-          <img id="layer-headrest" class="layer" alt="headrest" />
-          <img id="layer-stitch" class="layer" alt="stitch" style="display: none;" />
+          <img src="img/base.webp" alt="base" class="layer" style="z-index: 1;" />
+          <img id="layer-sides" src="" alt="sides" class="layer" style="z-index: 2;" />
+          <img id="layer-center" src="" alt="center" class="layer" style="z-index: 3;" />
+          <img id="layer-headrest" src="" alt="headrest" class="layer" style="z-index: 4;" />
+          <img id="layer-stitch" src="" alt="stitch" class="layer" style="z-index: 5;" />
         </div>
       </div>
 
+      <!-- Панель управления -->
       <div class="controls">
         <label>
           Цвет центра
@@ -36,7 +39,7 @@
         </label>
 
         <label>
-          Цвет боковин
+          Цвет боков
           <select id="side-color">
             <option value="00black">Чёрный</option>
             <option value="01grey">Серый</option>
@@ -50,20 +53,20 @@
         <label>
           Узор центра
           <select id="pattern">
-            <option value="lines">Двойная линия</option>
-            <option value="rhomb-small">Ромб мелкий</option>
-            <option value="rhomb-large">Ромб крупный</option>
+            <option value="lines">Линии</option>
+            <option value="rhomb-small">Мелкий ромб</option>
+            <option value="rhomb-large">Крупный ромб</option>
           </select>
         </label>
 
         <label>
           Прострочка
           <select id="stitch-pattern">
-            <option value="none">Нет</option>
+            <option value="none">Без прострочки</option>
             <option value="lines">Линии</option>
-            <option value="rhomb-small">Ромб мелкий</option>
-            <option value="rhomb-large">Ромб крупный</option>
-            <option value="rhomb-double">Ромб двойной</option>
+            <option value="rhomb-small">Мелкий ромб</option>
+            <option value="rhomb-large">Крупный ромб</option>
+            <option value="rhomb-double">Двойной ромб</option>
             <option value="hexagon">Соты</option>
           </select>
         </label>
@@ -71,7 +74,7 @@
     </div>
 
     <div class="footer">
-      <p>Версия: <span id="version"></span></p>
+      Версия конструктора: <span id="version">1.5</span>
     </div>
   </div>
 

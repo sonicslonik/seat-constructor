@@ -1,114 +1,101 @@
-const VERSION = "v1.4";
-const colors = ["00black", "01gray", "02white", "03beige", "04brown", "05red"];
-const patterns = ["lines", "rhomb-small", "rhomb-large"];
-const stitches = ["lines", "rhomb-small", "rhomb-large", "rhomb-double", "hexagon"];
+const version = '1.5';
+document.getElementById('version').textContent = version;
 
-function preloadImages() {
-  const basePath = "img/";
-  const ext = ".webp";
-  const images = [];
+// Элементы управления
+const centerSelect = document.getElementById('center-color');
+const sideSelect = document.getElementById('side-color');
+const patternSelect = document.getElementById('pattern');
+const stitchSelect = document.getElementById('stitch-pattern');
 
-  images.push(`${basePath}base.webp`);
+// Слои
+const layerSides = document.getElementById('layer-sides');
+const layerCenter = document.getElementById('layer-center');
+const layerHeadrest = document.getElementById('layer-headrest');
+const layerStitch = document.getElementById('layer-stitch');
 
-  colors.forEach(color => {
-    images.push(`${basePath}sides/${color}${ext}`);
-    images.push(`${basePath}headrest/${color}${ext}`);
-  });
+// Прелоадер изображений
+const imageCache = {};
 
-  patterns.forEach(pattern => {
-    colors.forEach(color => {
-      images.push(`${basePath}center-w-perforation/${pattern}/${color}${ext}`);
-    });
-  });
-
-  stitches.forEach(stitch => {
-    images.push(`${basePath}stitch/${stitch}/02white.webp`);
-  });
-
-  images.forEach(src => {
+function preloadImage(path) {
+  if (!imageCache[path]) {
     const img = new Image();
-    img.src = src;
-  });
-
-  console.log(`✅ Предзагружено ${images.length} изображений`);
+    img.src = path;
+    imageCache[path] = img;
+  }
 }
 
-function loadImage(src) {
-  return new Promise(resolve => {
-    const img = new Image();
-    img.onload = () => resolve(src);
-    img.src = src;
-  });
-}
+function updateLayers() {
+  const centerColor = centerSelect.value;
+  const sideColor = sideSelect.value;
+  const pattern = patternSelect.value;
+  const stitch = stitchSelect.value;
 
-async function updateView() {
-  const color = document.getElementById("center-color").value;
-  const sideColor = document.getElementById("side-color").value;
-  const pattern = document.getElementById("pattern").value;
-  const stitch = document.getElementById("stitch-pattern")?.value || "none";
+  const centerPath = `img/center-w-perforation/${pattern}/${centerColor}.png`;
+  const headrestPath = `img/headrest/${centerColor}.png`;
+  const sidesPath = `img/sides/${sideColor}.png`;
 
-  // сохраняем настройки в localStorage
-  localStorage.setItem("config", JSON.stringify({
-    centerColor: color,
-    sideColor: sideColor,
-    pattern: pattern,
-    stitch: stitch
-  }));
+  layerCenter.src = centerPath;
+  layerHeadrest.src = headrestPath;
+  layerSides.src = sidesPath;
 
-  const basePath = "img/";
-  const ext = ".webp";
-
-  const centerSrc = `${basePath}center-w-perforation/${pattern}/${color}${ext}`;
-  const sideSrc = `${basePath}sides/${sideColor}${ext}`;
-  const headrestSrc = `${basePath}headrest/${color}${ext}`;
-  const stitchSrc = stitch !== "none" ? `${basePath}stitch/${stitch}/02white.webp` : null;
-
-  const promises = [
-    loadImage(centerSrc),
-    loadImage(sideSrc),
-    loadImage(headrestSrc),
-    stitchSrc ? loadImage(stitchSrc) : Promise.resolve(null)
-  ];
-
-  const [center, sides, headrest, stitchImage] = await Promise.all(promises);
-
-  document.getElementById("layer-center").src = center;
-  document.getElementById("layer-sides").src = sides;
-  document.getElementById("layer-headrest").src = headrest;
-
-  const stitchLayer = document.getElementById("layer-stitch");
-  if (stitchImage) {
-    stitchLayer.src = stitchImage;
-    stitchLayer.style.display = "block";
+  // Прострочка
+  if (stitch !== 'none') {
+    const stitchPath = `img/stitch/${stitch}/02white.webp`;
+    layerStitch.style.display = 'block';
+    layerStitch.src = stitchPath;
   } else {
-    stitchLayer.style.display = "none";
+    layerStitch.style.display = 'none';
   }
+
+  // Сохраняем в localStorage
+  localStorage.setItem('config', JSON.stringify({ centerColor, sideColor, pattern, stitch }));
 }
 
-function restoreSavedConfig() {
-  const saved = JSON.parse(localStorage.getItem("config"));
+// Загрузка сохранённой конфигурации
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('config');
   if (saved) {
-    const center = document.getElementById("center-color");
-    const side = document.getElementById("side-color");
-    const pattern = document.getElementById("pattern");
-    const stitch = document.getElementById("stitch-pattern");
-
-    if (center && saved.centerColor) center.value = saved.centerColor;
-    if (side && saved.sideColor) side.value = saved.sideColor;
-    if (pattern && saved.pattern) pattern.value = saved.pattern;
-    if (stitch && saved.stitch) stitch.value = saved.stitch;
+    try {
+      const { centerColor, sideColor, pattern, stitch } = JSON.parse(saved);
+      centerSelect.value = centerColor;
+      sideSelect.value = sideColor;
+      patternSelect.value = pattern;
+      stitchSelect.value = stitch;
+    } catch (e) {
+      console.warn('Ошибка загрузки конфигурации:', e);
+    }
   }
+
+  updateLayers();
+  preloadAllImages();
+});
+
+// Обработчики событий
+centerSelect.addEventListener('change', updateLayers);
+sideSelect.addEventListener('change', updateLayers);
+patternSelect.addEventListener('change', updateLayers);
+stitchSelect.addEventListener('change', updateLayers);
+
+// Предзагрузка всех изображений
+function preloadAllImages() {
+  const colors = ['00black', '01grey', '02white', '03beige', '04brown', '05red'];
+  const patterns = ['lines', 'rhomb-small', 'rhomb-large'];
+  const stitches = ['lines', 'rhomb-small', 'rhomb-large', 'rhomb-double', 'hexagon'];
+
+  for (const pattern of patterns) {
+    for (const color of colors) {
+      preloadImage(`img/center-w-perforation/${pattern}/${color}.png`);
+    }
+  }
+
+  for (const color of colors) {
+    preloadImage(`img/sides/${color}.png`);
+    preloadImage(`img/headrest/${color}.png`);
+  }
+
+  for (const stitch of stitches) {
+    preloadImage(`img/stitch/${stitch}/02white.webp`);
+  }
+
+  preloadImage('img/base.webp');
 }
-
-document.querySelectorAll("select").forEach(select => {
-  select.addEventListener("change", updateView);
-});
-
-window.addEventListener("DOMContentLoaded", () => {
-  restoreSavedConfig();
-  preloadImages();
-  updateView();
-
-  const versionSpan = document.getElementById("version");
-  if (versionSpan) versionSpan.textContent = VERSION;
-});
