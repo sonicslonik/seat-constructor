@@ -1,11 +1,7 @@
-// Версия проекта (обновляй вручную при каждом изменении)
-const VERSION = "v1.2";
-
-// Возможные значения
-const colors = ["00black", "01grey", "02white", "03beige", "04brown", "05red"];
+const VERSION = "v1.3";
+const colors = ["00black", "01gray", "02white", "03beige", "04brown", "05red"];
 const patterns = ["lines", "rhomb-small", "rhomb-large"];
 
-// Предзагрузка всех изображений
 function preloadImages() {
   const basePath = "img/";
   const ext = ".webp";
@@ -32,7 +28,6 @@ function preloadImages() {
   console.log(`✅ Предзагружено ${images.length} изображений`);
 }
 
-// Загрузка одного изображения (обёртка в Promise)
 function loadImage(src) {
   return new Promise(resolve => {
     const img = new Image();
@@ -41,11 +36,17 @@ function loadImage(src) {
   });
 }
 
-// Обновление отображения (с ожиданием загрузки всех слоёв)
 async function updateView() {
   const color = document.getElementById("center-color").value;
   const sideColor = document.getElementById("side-color").value;
   const pattern = document.getElementById("pattern").value;
+
+  // сохраняем настройки в localStorage
+  localStorage.setItem("config", JSON.stringify({
+    centerColor: color,
+    sideColor: sideColor,
+    pattern: pattern
+  }));
 
   const basePath = "img/";
   const ext = ".webp";
@@ -54,30 +55,38 @@ async function updateView() {
   const sideSrc = `${basePath}sides/${sideColor}${ext}`;
   const headrestSrc = `${basePath}headrest/${color}${ext}`;
 
-  // Дожидаемся загрузки всех нужных слоёв
   const [center, sides, headrest] = await Promise.all([
     loadImage(centerSrc),
     loadImage(sideSrc),
     loadImage(headrestSrc)
   ]);
 
-  // Меняем изображения одновременно
   document.getElementById("layer-center").src = center;
   document.getElementById("layer-sides").src = sides;
   document.getElementById("layer-headrest").src = headrest;
 }
 
-// Назначаем события
+function restoreSavedConfig() {
+  const saved = JSON.parse(localStorage.getItem("config"));
+  if (saved) {
+    const center = document.getElementById("center-color");
+    const side = document.getElementById("side-color");
+    const pattern = document.getElementById("pattern");
+
+    if (center && saved.centerColor) center.value = saved.centerColor;
+    if (side && saved.sideColor) side.value = saved.sideColor;
+    if (pattern && saved.pattern) pattern.value = saved.pattern;
+  }
+}
+
 document.querySelectorAll("select").forEach(select => {
   select.addEventListener("change", updateView);
 });
 
-// Инициализация
 window.addEventListener("DOMContentLoaded", () => {
-  preloadImages();
-  updateView();
-
-  // Отображение версии
+  restoreSavedConfig();      // восстановить выбор
+  preloadImages();           // предзагрузить картинки
+  updateView();              // отрисовать
   const versionSpan = document.getElementById("version");
   if (versionSpan) versionSpan.textContent = VERSION;
 });
