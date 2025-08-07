@@ -5,7 +5,7 @@
   --primary: #2962ff;
   --border: #e0e0e0;
   --radius: 12px;
-  --shadow: 0 8px 24px rgba(0,0,0,0.1);
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 * {
@@ -18,36 +18,60 @@ body {
   background: var(--bg);
   color: var(--text);
   line-height: 1.6;
-}
-
-.container {
-  max-width: 1000px;
-  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 2rem;
 }
 
-h1 {
-  text-align: center;
-  font-weight: 600;
-  margin-bottom: 2rem;
+.container {
+  display: flex;
+  max-width: 1200px;
+  width: 100%;
+  background: transparent;
+  gap: 2rem;
+  align-items: flex-start;
+  justify-content: space-between;
 }
 
+/* Кресло слева */
+.seat-view {
+  position: relative;
+  flex: 1 1 60%;
+  aspect-ratio: 1 / 1.1;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: transparent;
+  max-width: 700px;
+}
+
+.seat-view img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Панель справа */
 .controls {
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex: 1 1 300px;
   background: var(--panel-bg);
   padding: 1.5rem;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .control-group {
   display: flex;
   flex-direction: column;
-  flex: 1 1 200px;
 }
 
 label {
@@ -62,7 +86,7 @@ select {
   border-radius: var(--radius);
   background: #fff;
   appearance: none;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   transition: border-color 0.2s;
 }
 
@@ -70,34 +94,29 @@ select:hover {
   border-color: var(--primary);
 }
 
-.seat-view {
-  position: relative;
-  width: 100%;
-  max-width: 800px;
-  aspect-ratio: 1 / 1.1;
-  margin: 0 auto;
-  border-radius: var(--radius);
-  overflow: hidden;
-  background: transparent;
-}
-
-.seat-view img {
+/* Заголовок */
+h1 {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+  top: 1rem;
+  left: 1rem;
+  font-size: 1.5rem;
+  color: #999;
+  font-weight: 600;
   pointer-events: none;
-  transition: opacity 0.3s ease-in-out;
 }
 
+/* Мобильная адаптация */
 @media (max-width: 768px) {
-  .controls {
+  .container {
     flex-direction: column;
+    align-items: stretch;
   }
 
-  .control-group {
+  .seat-view {
+    width: 100%;
+  }
+
+  .controls {
     width: 100%;
   }
 }
