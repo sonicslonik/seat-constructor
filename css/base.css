@@ -1,0 +1,57 @@
+/* Подключаем Inter из Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+/* Общие переменные */
+:root {
+  --bg: #f5f7fa;
+  --panel-bg: #ffffff;
+  --text: #1e1e1e;
+  --primary: #2962ff;
+  --danger: #e53935;
+  --border: #e0e0e0;
+  --radius: 12px;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Сброс отступов и размеров */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Тело */
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  font-size: 16px;
+  overflow: hidden;
+}
+
+/* Стандартизируем формы */
+input, select, button {
+  font-family: inherit;
+  font-size: 1rem;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* Удалим лишние хромы у селектов на мобильных */
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Картинки */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  pointer-events: none;
+}

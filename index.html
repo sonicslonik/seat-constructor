@@ -4,43 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Конструктор кресел</title>
-  <link rel="stylesheet" href="css/styles.css" />
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="css/base.css" />
+  <script defer src="js/main.js"></script>
 </head>
 <body>
-  <div class="container">
-    <h1>Конструктор кресел</h1>
-
-    <div class="controls">
-      <div class="control-group">
-        <label>Цвет основы</label>
-        <select id="baseColorSelect"></select>
-      </div>
-
-      <div class="control-group">
-        <label>Узор основы</label>
-        <select id="patternSelect">
-          <option value="lines">Lines</option>
-          <option value="rhomb-large">Rhomb Large</option>
-          <option value="rhomb-small">Rhomb Small</option>
-        </select>
-      </div>
-
-      <div class="control-group">
-        <label>Цвет боковин</label>
-        <select id="sidesColorSelect"></select>
-      </div>
-    </div>
-
-    <div class="seat-view">
-      <img id="base" src="img/base.webp" />
-      <img id="headrest" />
-      <img id="center" />
-      <img id="sides" />
-      <img id="stitch" />
-    </div>
-  </div>
-
-  <script src="js/script.js"></script>
+  <div id="app"></div>
 </body>
 </html>
