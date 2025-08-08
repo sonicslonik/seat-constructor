@@ -1,10 +1,12 @@
+let currentPlatform = detectPlatform(); // сохраняем текущую платформу
+
 function detectPlatform() {
   const width = window.innerWidth;
   const height = window.innerHeight;
 
   if (width >= 1024) return 'desktop';
   if (width < 768 && height > width) return 'mobile-portrait';
-  if (width < 1024 && width > height) return 'mobile-landscape';
+  if (width < 1024 && width >= height) return 'mobile-landscape';
 
   return 'mobile-portrait';
 }
@@ -35,7 +37,7 @@ function loadScript(src) {
 }
 
 async function init() {
-  const platform = detectPlatform();
+  currentPlatform = detectPlatform(); // актуализируем платформу
 
   const templateMap = {
     'desktop': {
@@ -52,7 +54,7 @@ async function init() {
     }
   };
 
-  const { css, html } = templateMap[platform];
+  const { css, html } = templateMap[currentPlatform];
 
   loadCSS(css);
   await loadHTML(html);
@@ -64,5 +66,13 @@ async function init() {
     console.error('initConstructor is not defined');
   }
 }
+
+// 👉 Обновляем при изменении платформы
+window.addEventListener('resize', () => {
+  const newPlatform = detectPlatform();
+  if (newPlatform !== currentPlatform) {
+    location.reload();
+  }
+});
 
 window.addEventListener('DOMContentLoaded', init);
