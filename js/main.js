@@ -18,14 +18,6 @@ function loadCSS(file) {
   document.head.appendChild(link);
 }
 
-function loadHTML(templateName) {
-  return fetch(`templates/${templateName}.html`)
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById('app').innerHTML = html;
-    });
-}
-
 function loadScript(src) {
   return new Promise((resolve, reject) => {
     const script = document.createElement('script');
@@ -41,23 +33,19 @@ async function init() {
 
   const templateMap = {
     'desktop': {
-      css: 'css/desktop.css',
-      html: 'desktop'
+      css: 'css/desktop.css'
     },
     'mobile-portrait': {
-      css: 'css/mobile-portrait.css',
-      html: 'mobile-portrait'
+      css: 'css/mobile-portrait.css'
     },
     'mobile-landscape': {
-      css: 'css/mobile-landscape.css',
-      html: 'mobile-landscape'
+      css: 'css/mobile-landscape.css'
     }
   };
 
-  const { css, html } = templateMap[currentPlatform];
+  const { css } = templateMap[currentPlatform];
 
   loadCSS(css);
-  await loadHTML(html);
   await loadScript('js/constructor.js');
 
   if (typeof initConstructor === 'function') {

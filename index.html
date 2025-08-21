@@ -9,6 +9,50 @@
   <script defer src="js/main.js"></script>
 </head>
 <body>
-  <div id="app"></div>
+  <div class="layout">
+  <div class="config-wrapper scrollable">
+    <div class="price-display">
+      <span>Итого:</span> <strong id="totalPrice">—</strong>
+    </div>
+
+    <div class="control-group">
+      <label>Базовый цвет</label>
+      <select id="baseColorSelect"></select>
+    </div>
+
+    <div class="control-group">
+      <label>Цвет центральной вставки</label>
+      <select id="centerColorSelect"></select>
+    </div>
+
+    <div class="control-group">
+      <label>Цвет клиньев</label>
+      <select id="wedgesColorSelect"></select>
+    </div>
+
+    <div class="control-group">
+      <label>Узор</label>
+      <select id="patternSelect"></select>
+    </div>
+
+    <div class="control-group">
+      <label>Материал</label>
+      <select id="materialSelect"></select>
+    </div>
+
+    <button id="resetBtn" class="reset-btn">Сбросить конфиг</button>
+  </div>
+  <div class="image-wrapper fixed-image">
+    <div class="image-container">
+      <img id="base" />
+      <img id="headrest" />
+      <img id="center" />
+      <img id="wedges" />
+      <img id="stitch" />
+    </div>
+
+  </div>
+
+</div>
 </body>
 </html>

@@ -1,6 +1,4 @@
 :root {
-  --bg: #f5f7fa;
-  --panel-bg: #ffffff;
   --text: #1e1e1e;
   --primary: #2962ff;
   --danger: #e53935;
@@ -26,7 +24,7 @@ body {
 }
 
 /* === Layout === */
-.layout--desktop {
+.layout {
   display: flex;
   gap: 3rem;
   align-items: flex-start;

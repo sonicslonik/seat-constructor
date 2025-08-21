@@ -1,175 +1,191 @@
 function initConstructor() {
+  // === Константы справочников ===
+  const ASSET_BASE = '/';
+  const IMAGE_FORMAT = 'png';
+
   const COLORS = [
-    { name: "Черный", value: "00black" },
-    { name: "Серый", value: "01grey" },
-    { name: "Белый", value: "02white" },
-    { name: "Бежевый", value: "03beige" },
+    { name: "Черный",   value: "00black" },
+    { name: "Серый",    value: "01grey" },
+    { name: "Белый",    value: "02white" },
+    { name: "Бежевый",  value: "03beige" },
     { name: "Коричневый", value: "04brown" },
-    { name: "Красный", value: "05red" },
+    { name: "Красный",  value: "05red" },
   ];
 
   const PATTERNS = [
-    { name: "Линии", value: "01lines" },
-    { name: "Мелкий ромб", value: "02rhomb-small" },
-    { name: "Крупный ромб", value: "03rhomb-large" },
-    { name: "Двойной ромб", value: "04rhomb-double" },
-    { name: "Гексагон", value: "05hexagon" },
+    { name: "Линии",        value: "lines" },
+    { name: "Мелкий ромб",  value: "rhomb-small" },
+    { name: "Крупный ромб", value: "rhomb-large" },
+    { name: "Двойной ромб", value: "rhomb-double" },
+    { name: "Соты",     value: "cells" },
   ];
 
-  const PERFORATION = [
-    { name: "Без перфорации", value: "wo-perforation" },
-    { name: "С перфорацией", value: "w-perforation" },
+  const MATERIALS = [
+    { name: "Без перфорации", value: "smooth" },
+    { name: "С перфорацией",  value: "perforated" },
+    { name: "Алькантара",     value: "alcantara" },
   ];
 
+  // === Селекты ===
   const selects = {
-    baseColor: document.getElementById("baseColorSelect"),
-    sidesColor: document.getElementById("sidesColorSelect"),
-    stitchColor: document.getElementById("stitchColorSelect"),
-    pattern: document.getElementById("patternSelect"),
-    perforation: document.getElementById("perforationSelect"),
+    baseColor:   document.getElementById("baseColorSelect"),
+    centerColor: document.getElementById("centerColorSelect"),
+    wedgesColor: document.getElementById("wedgesColorSelect"),
+    pattern:     document.getElementById("patternSelect"),
+    material:    document.getElementById("materialSelect"),
   };
 
+  // === Слои ===
   const layers = {
-    base: document.getElementById("base"),
+    base:     document.getElementById("base"),
     headrest: document.getElementById("headrest"),
-    center: document.getElementById("center"),
-    sides: document.getElementById("sides"),
-    stitch: document.getElementById("stitch"),
+    center:   document.getElementById("center"),
+    wedges:   document.getElementById("wedges"),
+    stitch:   document.getElementById("stitch"),
   };
 
-  function preloadImage(path) {
-    const img = new Image();
-    img.src = path;
-    return new Promise((resolve) => (img.onload = resolve));
+  // === Helpers ===
+  function preload(path) {
+    return new Promise((resolve) => {
+      const i = new Image();
+      i.onload = resolve;
+      i.onerror = resolve;
+      i.src = path;
+    });
   }
 
-  function saveToLocalStorage() {
+  function save() {
     const data = Object.fromEntries(
-      Object.entries(selects).map(([k, s]) => [k, s.value])
+      Object.entries(selects).map(([k, s]) => [k, s?.value])
     );
-    localStorage.setItem("seatConfig", JSON.stringify(data));
+    try { localStorage.setItem("seatConfigV2", JSON.stringify(data)); } catch(e){}
   }
 
-  function loadFromLocalStorage() {
-    const data = JSON.parse(localStorage.getItem("seatConfig"));
-    if (data) {
-      for (const key in selects) {
-        if (data[key]) selects[key].value = data[key];
+  function load() {
+    try {
+      const data = JSON.parse(localStorage.getItem("seatConfigV2"));
+      if (data) {
+        for (const k in selects) if (selects[k] && data[k]) selects[k].value = data[k];
+        return;
       }
-    } else {
-      setDefaults();
-    }
+    } catch(e){}
+    setDefaults();
   }
 
   function setDefaults() {
-    selects.baseColor.value = "00black";
-    selects.sidesColor.value = "00black";
-    selects.stitchColor.value = "00black";
-    selects.pattern.value = "01lines";
-    selects.perforation.value = "wo-perforation";
+    if (selects.baseColor)   selects.baseColor.value = "00black";
+    if (selects.centerColor) selects.centerColor.value = "00black";
+    if (selects.wedgesColor) selects.wedgesColor.value = "00black";
+    if (selects.pattern)     selects.pattern.value = "lines";
+    if (selects.material)    selects.material.value = "smooth";
+  }
+
+  // === Собираем пути к ассетам по правилам ===
+  function buildPaths() {
+    const baseColor   = selects.baseColor?.value;
+    const centerColor = selects.centerColor?.value;
+    const wedgesColor = selects.wedgesColor?.value;
+    const pattern     = selects.pattern?.value;
+    const material    = selects.material?.value;
+
+    return {
+      base:     `img/base/${baseColor}.${IMAGE_FORMAT}`,                 // база ← Базовый цвет
+      headrest: `img/headrest/${centerColor}.${IMAGE_FORMAT}`,           // подголовник ← Цвет центральной вставки
+      center:   `img/center/${material}/${pattern}/${centerColor}.${IMAGE_FORMAT}`, // центр ← Материал + Узор + Цвет центральной вставки
+      wedges:   `img/wedges/${wedgesColor}.${IMAGE_FORMAT}`,             // клинья ← Цвет клиньев
+      stitch:   `img/stitch/${pattern}/${baseColor}.${IMAGE_FORMAT}`,    // прострочка ← Узор + Базовый цвет
+    };
   }
 
   function updateImages() {
-    const baseColor = selects.baseColor.value;
-    const sidesColor = selects.sidesColor.value;
-    const stitchColor = selects.stitchColor.value;
-    const pattern = selects.pattern.value;
-    const perforation = selects.perforation.value;
+    const p = buildPaths();
 
-    const centerPath = `img/center/${perforation}/${pattern}/${baseColor}.webp`;
-    const headrestPath = `img/headrest/${baseColor}.webp`;
-    const sidesPath = `img/sides/${sidesColor}.webp`;
-    const stitchPath = `img/stitch/${pattern}/${stitchColor}.webp`;
+    // грузим параллельно, чтобы не мигало
+    Promise.all([preload(p.base), preload(p.headrest), preload(p.center), preload(p.wedges), preload(p.stitch)])
+      .then(() => {
+        if (layers.base)     layers.base.src = p.base;
+        if (layers.headrest) layers.headrest.src = p.headrest;
+        if (layers.center)   layers.center.src = p.center;
+        if (layers.wedges)   layers.wedges.src = p.wedges;
+        if (layers.stitch)   layers.stitch.src = p.stitch;
+      });
 
-    // Base не зависит от настроек — просто добавляем
-    layers.base.src = "img/base.webp";
-
-    Promise.all([
-      preloadImage(centerPath),
-      preloadImage(headrestPath),
-      preloadImage(sidesPath),
-      preloadImage(stitchPath),
-    ]).then(() => {
-      layers.center.src = centerPath;
-      layers.headrest.src = headrestPath;
-      layers.sides.src = sidesPath;
-      layers.stitch.src = stitchPath;
-    });
-
-    saveToLocalStorage();
-    calculatePrice();
-    syncImageHeightToConfig();
+    save();
+    updatePrice();       // опционально — если нужна цена
+    syncSquareOnDesktop();
   }
 
-  function calculatePrice() {
-    const pattern = selects.pattern.value;
-    const perforation = selects.perforation.value;
+  // === Цена (пример, подправь под свои правила) ===
+function updatePrice() {
+  const baseColor   = selects.baseColor?.value;
+  const wedgesColor = selects.wedgesColor?.value;
+  const pattern     = selects.pattern?.value;
+  const material    = selects.material?.value;
 
-    let price = 15000 + 4000;
+  let price = 7500; // базовая цена, всё чёрное
 
-    if (["02rhomb-small", "03rhomb-large"].includes(pattern)) {
-      price += 1500;
-    } else if (["04rhomb-double", "05hexagon"].includes(pattern)) {
-      price += 2500;
-    }
-
-    if (perforation === "w-perforation") {
-      price += 2000;
-    }
-
-    const priceEl = document.getElementById("totalPrice");
-    if (priceEl) priceEl.textContent = `${price.toLocaleString()} ₽`;
+  // Цветные клинья (если не чёрные)
+  if (wedgesColor !== "00black") {
+    price += 2000;
   }
 
-  function setupSelectors() {
-    COLORS.forEach((c) => {
+  // Материал
+  if (material === "perforated") {
+    price += 500;
+  } else if (material === "alcantara") {
+    price += 2000;
+  }
+
+  // Узор
+  switch (pattern) {
+    case "rhomb-large": price += 1800; break;
+    case "rhomb-small": price += 2100; break;
+    case "rhomb-double": price += 2000; break;
+    case "cells": price += 5000; break;
+    // lines = 0
+  }
+
+  const priceEl = document.getElementById("totalPrice");
+  if (priceEl) priceEl.textContent = `${price.toLocaleString('ru-RU')} ₽`;
+}
+
+  function wireSelectors() {
+    COLORS.forEach(c => {
       selects.baseColor?.append(new Option(c.name, c.value));
-      selects.sidesColor?.append(new Option(c.name, c.value));
-      selects.stitchColor?.append(new Option(c.name, c.value));
+      selects.centerColor?.append(new Option(c.name, c.value));
+      selects.wedgesColor?.append(new Option(c.name, c.value));
     });
+    PATTERNS.forEach(p => selects.pattern?.append(new Option(p.name, p.value)));
+    MATERIALS.forEach(m => selects.material?.append(new Option(m.name, m.value)));
 
-    PATTERNS.forEach((p) => {
-      selects.pattern?.append(new Option(p.name, p.value));
-    });
-
-    PERFORATION.forEach((p) => {
-      selects.perforation?.append(new Option(p.name, p.value));
-    });
-
-    Object.values(selects).forEach((s) =>
-      s?.addEventListener("change", () => {
-        updateImages();
-        calculatePrice();
-      })
-    );
+    Object.values(selects).forEach(s => s?.addEventListener('change', updateImages));
   }
 
-  function setupResetButton() {
-    const resetBtn = document.getElementById("resetBtn");
-    resetBtn?.addEventListener("click", () => {
-      localStorage.removeItem("seatConfig");
+  function wireReset() {
+    const reset = document.getElementById('resetBtn');
+    reset?.addEventListener('click', () => {
+      try { localStorage.removeItem('seatConfigV2'); } catch(e){}
       setDefaults();
       updateImages();
     });
   }
 
-function syncImageHeightToConfig() {
-  const isDesktop = window.innerWidth >= 1024;
-  if (!isDesktop) return;
-
-  const config = document.querySelector(".config-wrapper");
-  const imageContainer = document.querySelector(".image-container");
-
-  if (config && imageContainer) {
-    const height = config.offsetHeight;
-    imageContainer.style.height = `${height}px`;
-    imageContainer.style.width = `${height}px`;
+  function syncSquareOnDesktop() {
+    const isDesktop = window.innerWidth >= 1024;
+    if (!isDesktop) return;
+    const cfg = document.querySelector('.config-wrapper');
+    const img = document.querySelector('.image-container');
+    if (cfg && img) {
+      const h = cfg.offsetHeight;
+      img.style.height = `${h}px`;
+      img.style.width  = `${h}px`;
+    }
   }
-}
-  // === INIT ===
-  setupSelectors();
-  setupResetButton();
-  loadFromLocalStorage();
+
+  // INIT
+  wireSelectors();
+  wireReset();
+  load();
   updateImages();
-window.addEventListener('resize', syncImageHeightToConfig);
+  window.addEventListener('resize', syncSquareOnDesktop);
 }
